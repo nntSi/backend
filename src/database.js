@@ -1,21 +1,21 @@
-const mysql = require('mysql2');
+const Sequelize = require("sequelize");
+const DB_NAME = "database";
 
-const DB_NAME = "test";
-
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  database: DB_NAME,
-  password: 'Surveyhubtrue'
+const sequelize = new Sequelize(DB_NAME, "root", "dev@555mysqlpass!", {
+  host: "localhost",
+  dialect: "mysql",
+  logging: false,
 });
 
-/* connection.query(
-  `CREATE DATABASE IF NOT EXISTS ${DB_NAME}`,
-  function (err, results) {
-    return;
-  }
-); */
+const db = {};
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
+db.sequelize.sync({ alter: true });
 
-module.exports = {
-  connection
-}
+// regis model
+db.admin = require("./models/Admin")(sequelize, Sequelize);
+
+// set relation
+
+
+module.exports = db;
